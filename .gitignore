@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment variables (IMPORTANT!)
+.env
+.env.local
+.env.production
+.env.development
+
+# Build outputs
+dist/
+build/
+*.log
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+.cache/
+
+# Frontend specific
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+# Backend specific
+backend/uploads/
+backend/logs/
+
+# MongoDB local data (if any)
+data/
