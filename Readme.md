@@ -1,298 +1,458 @@
-# Heyopey.ai - Restaurant Inspection System
+# 🏪 Heyopey Restaurant Inspection System
 
-A full-stack MERN application for managing restaurant inspections via WhatsApp flows.
+A full-stack MERN application that enables restaurant administrators to create inspection checklists and automatically send them to employees via WhatsApp Flows. Employees complete inspections on WhatsApp, and responses are captured and displayed on an admin dashboard.
 
-## 🎯 Features
+[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Express.js](https://img.shields.io/badge/Express.js-000000?style=flat&logo=express&logoColor=white)](https://expressjs.com/)
+[![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![WhatsApp API](https://img.shields.io/badge/WhatsApp-25D366?style=flat&logo=whatsapp&logoColor=white)](https://developers.facebook.com/docs/whatsapp)
 
-- ✅ Admin authentication
-- ✅ Create restaurants with multiple sections
-- ✅ Define inspection questions per section (yes/no, number, text)
-- ✅ Generate WhatsApp Flows and send to employees
-- ✅ Receive responses via webhook
-- ✅ View responses on dashboard
-- ✅ Filter responses by restaurant
+## 📋 Table of Contents
 
-## 🏗️ Tech Stack
+- [Features](#-features)
+- [Demo](#-demo)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [API Documentation](#-api-documentation)
+- [WhatsApp Integration](#-whatsapp-integration)
+- [Project Structure](#-project-structure)
+- [Screenshots](#-screenshots)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-- **Backend**: Node.js, Express, MongoDB, Mongoose
-- **Frontend**: React 18, Vite, Axios
-- **Integration**: WhatsApp Business Cloud API
+## ✨ Features
+
+- 🔐 **Admin Authentication** - Secure JWT-based login system
+- 🏢 **Restaurant Management** - Create and manage multiple restaurant locations
+- 📍 **Section Organization** - Define inspection areas (e.g., Billing Counter, Dining Area, Washroom)
+- ❓ **Dynamic Questions** - Create custom questions with multiple types (Yes/No, Number, Text)
+- 📱 **WhatsApp Flow Generation** - Automatically generate interactive WhatsApp forms
+- 🔔 **Automated Notifications** - Send inspection forms directly to employee phone numbers
+- 📊 **Real-time Dashboard** - View and filter inspection responses by restaurant
+- 🔗 **Webhook Integration** - Capture responses via WhatsApp Business API webhooks
+- 🎯 **Sample Data** - Quick setup with pre-loaded sample data for testing
+
+## 🎬 Demo
+
+[📹 Watch Demo Video](YOUR_LOOM_VIDEO_LINK_HERE)
+
+**Test Credentials:**
+- Email: `admin@heyopey.com`
+- Password: `admin123`
+
+## 🛠️ Tech Stack
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web application framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - ODM for MongoDB
+- **JWT** - Authentication
+- **Axios** - HTTP client for WhatsApp API
+
+### Frontend
+- **React 18** - UI library
+- **Vite** - Build tool and dev server
+- **Axios** - API communication
+
+### Integration
+- **WhatsApp Business Cloud API** - Messaging and Flow creation
+- **Meta Graph API** - Flow management
+
+## 🏗️ Architecture
+
+```
+┌─────────────┐         ┌─────────────┐         ┌──────────────┐
+│   Admin     │         │   Backend   │         │   WhatsApp   │
+│  Dashboard  │ ◄─────► │   API       │ ◄─────► │   Business   │
+│  (React)    │         │  (Express)  │         │     API      │
+└─────────────┘         └─────────────┘         └──────────────┘
+                               │
+                               ▼
+                        ┌─────────────┐
+                        │   MongoDB   │
+                        │  Database   │
+                        └─────────────┘
+```
+
+### Data Flow
+1. Admin creates restaurant, sections, and questions via React UI
+2. Backend stores data in MongoDB
+3. Admin triggers "Send Inspection"
+4. Backend creates WhatsApp Flow via Meta API
+5. WhatsApp sends interactive form to employees
+6. Employees complete inspection on WhatsApp
+7. Webhook receives responses and stores in database
+8. Dashboard displays all responses in real-time
 
 ## 📦 Installation
 
 ### Prerequisites
 
-- Node.js v16+
-- MongoDB (local or MongoDB Atlas)
-- WhatsApp Business Account
+- Node.js (v16 or higher)
+- MongoDB (local installation or Atlas account)
+- WhatsApp Business Account (optional for full functionality)
+- Git
 
-### 1. Clone Repository
+### Clone Repository
 
 ```bash
-git clone <your-repo-url>
-cd heyopey-inspection
+git clone https://github.com/YOUR_USERNAME/heyopey-restaurant-inspection.git
+cd heyopey-restaurant-inspection
 ```
 
-### 2. Backend Setup
+### Backend Setup
 
 ```bash
 cd backend
 npm install
 ```
 
-Create `backend/.env`:
+Create `.env` file in backend directory:
 
 ```env
 PORT=5000
 MONGODB_URI=mongodb://localhost:27017/heyopey
-JWT_SECRET=your_super_secret_jwt_key_change_this
-WHATSAPP_API_TOKEN=YOUR_META_ACCESS_TOKEN
-WHATSAPP_PHONE_NUMBER_ID=YOUR_PHONE_NUMBER_ID
-WHATSAPP_BUSINESS_ACCOUNT_ID=YOUR_BUSINESS_ACCOUNT_ID
+JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
+WHATSAPP_API_TOKEN=your_meta_access_token
+WHATSAPP_PHONE_NUMBER_ID=your_phone_number_id
+WHATSAPP_BUSINESS_ACCOUNT_ID=your_business_account_id
 WEBHOOK_VERIFY_TOKEN=your_webhook_verification_token
 ```
 
-Start backend:
+Start backend server:
 
 ```bash
 npm start
 ```
 
-Backend runs on: `http://localhost:5000`
+Server will run on `http://localhost:5000`
 
-### 3. Frontend Setup
+### Frontend Setup
 
 ```bash
 cd frontend
 npm install
 ```
 
-Create `frontend/.env`:
+Create `.env` file in frontend directory:
 
 ```env
 VITE_API_URL=http://localhost:5000
 ```
 
-Start frontend:
+Start development server:
 
 ```bash
 npm run dev
 ```
 
-Frontend runs on: `http://localhost:3000`
+Frontend will run on `http://localhost:3000`
 
-## 🔐 Default Login Credentials
-
-```
-Email: admin@heyopey.com
-Password: admin123
-```
-
-## 📱 WhatsApp API Setup
-
-### Step 1: Create Meta Developer Account
-
-1. Go to https://developers.facebook.com
-2. Create a new account or login
-3. Create a new Business App
-
-### Step 2: Add WhatsApp Product
-
-1. In your app dashboard, click "Add Product"
-2. Select "WhatsApp" and click "Set Up"
-3. Complete the setup wizard
-
-### Step 3: Get Credentials
-
-1. **Phone Number ID**: Found in WhatsApp > Getting Started
-2. **Business Account ID**: Found in App Settings
-3. **Access Token**: Generate from WhatsApp > Getting Started (Temporary) or create a System User for permanent token
-
-### Step 4: Configure Webhook
-
-1. In WhatsApp settings, go to "Configuration"
-2. Click "Edit" next to Webhook
-3. Enter your webhook URL: `https://your-domain.com/api/whatsapp/webhook`
-4. Enter the verify token (same as in your .env)
-5. Subscribe to `messages` events
-
-### Step 5: Update .env
-
-Update your `backend/.env` with the credentials:
-
-```env
-WHATSAPP_API_TOKEN=YOUR_ACTUAL_TOKEN
-WHATSAPP_PHONE_NUMBER_ID=123456789012345
-WHATSAPP_BUSINESS_ACCOUNT_ID=123456789012345
-WEBHOOK_VERIFY_TOKEN=your_chosen_verification_token
-```
-
-## 🚀 Usage Guide
+## 🚀 Usage
 
 ### 1. Login
-
-- Open http://localhost:3000
-- Use default credentials to login
+- Navigate to `http://localhost:3000`
+- Use default credentials or register new admin
 
 ### 2. Create Restaurant
-
 - Click "Create Restaurant" tab
-- Enter restaurant name: `McDonald's India - Jayanagar`
-- Enter location: `Jayanagar, Bangalore`
-- Click "Create Restaurant" or use "Load Sample Data"
+- Enter restaurant details or use "Load Sample Data"
+- Example: McDonald's India - Jayanagar
 
 ### 3. Add Sections
-
 - Click "Add Sections" tab
-- Add sections one by one or click "Add Sample Sections":
-  - Billing Counter
-  - Dining Area
-  - Washroom Area
+- Add inspection areas manually or use "Add Sample Sections"
+- Examples: Billing Counter, Dining Area, Washroom Area
 
-### 4. Add Questions
-
+### 4. Create Questions
 - Click "Add Questions" tab
-- Select a section
-- Add questions or click "Add Sample Questions"
-- Sample questions for Billing Counter:
-  - Is billing machine working fine? (yes/no)
-  - Is the card-swiping machine working fine? (yes/no)
-  - How many people are currently waiting in queue? (number)
+- Select section and add questions with appropriate types
+- Use "Add Sample Questions" for quick setup
 
-### 5. Send Inspection Form
-
+### 5. Send Inspection
 - Click "Send Inspection" tab
 - Enter employee phone numbers (format: +919876543210)
 - Click "Generate & Send WhatsApp Form"
-- System will create a WhatsApp Flow and send to employees
 
 ### 6. View Responses
-
 - Click "Dashboard" tab
 - View all submitted responses
 - Filter by restaurant
-- See employee details, submission time, and answers
 
-## 📊 Database Schema
-
-### Restaurant
-```javascript
-{
-  name: String,
-  location: String,
-  createdBy: String,
-  createdAt: Date
-}
-```
-
-### Section
-```javascript
-{
-  name: String,
-  restaurant: ObjectId (ref: Restaurant),
-  createdAt: Date
-}
-```
-
-### Question
-```javascript
-{
-  text: String,
-  type: String (enum: ['yes/no', 'number', 'text']),
-  section: ObjectId (ref: Section),
-  restaurant: ObjectId (ref: Restaurant),
-  createdAt: Date
-}
-```
-
-### Response
-```javascript
-{
-  restaurant: ObjectId (ref: Restaurant),
-  section: ObjectId (ref: Section),
-  employeePhone: String,
-  employeeName: String,
-  answers: [{
-    question: ObjectId (ref: Question),
-    questionText: String,
-    answer: Mixed
-  }],
-  flowId: String,
-  submittedAt: Date
-}
-```
-
-## 🔧 API Endpoints
+## 📚 API Documentation
 
 ### Authentication
-- `POST /api/auth/login` - Admin login
-- `POST /api/auth/register` - Register new admin
+
+#### Login
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@heyopey.com",
+  "password": "admin123"
+}
+```
+
+**Response:**
+```json
+{
+  "token": "jwt_token_here",
+  "user": {
+    "email": "admin@heyopey.com",
+    "name": "Admin User"
+  }
+}
+```
 
 ### Restaurants
-- `GET /api/restaurants` - Get all restaurants
-- `POST /api/restaurants` - Create restaurant
-- `GET /api/restaurants/:id` - Get single restaurant
+
+#### Get All Restaurants
+```http
+GET /api/restaurants
+Authorization: Bearer {token}
+```
+
+#### Create Restaurant
+```http
+POST /api/restaurants
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "McDonald's India - Jayanagar",
+  "location": "Jayanagar, Bangalore"
+}
+```
 
 ### Sections
-- `GET /api/sections/restaurant/:restaurantId` - Get sections by restaurant
-- `POST /api/sections` - Create section
+
+#### Get Sections by Restaurant
+```http
+GET /api/sections/restaurant/{restaurantId}
+Authorization: Bearer {token}
+```
+
+#### Create Section
+```http
+POST /api/sections
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Billing Counter",
+  "restaurant": "restaurant_id_here"
+}
+```
 
 ### Questions
-- `GET /api/questions/restaurant/:restaurantId` - Get questions by restaurant
-- `GET /api/questions/section/:sectionId` - Get questions by section
-- `POST /api/questions` - Create question
+
+#### Get Questions by Restaurant
+```http
+GET /api/questions/restaurant/{restaurantId}
+Authorization: Bearer {token}
+```
+
+#### Create Question
+```http
+POST /api/questions
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "text": "Is billing machine working fine?",
+  "type": "yes/no",
+  "section": "section_id_here",
+  "restaurant": "restaurant_id_here"
+}
+```
 
 ### WhatsApp
-- `POST /api/whatsapp/send` - Send inspection form
-- `POST /api/whatsapp/webhook` - Receive responses
-- `GET /api/whatsapp/webhook` - Verify webhook
+
+#### Send Inspection Form
+```http
+POST /api/whatsapp/send
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "restaurantId": "restaurant_id_here",
+  "phoneNumbers": ["+919876543210", "+919123456789"]
+}
+```
 
 ### Responses
-- `GET /api/responses` - Get all responses
-- `GET /api/responses/restaurant/:restaurantId` - Get responses by restaurant
 
-## 🎬 Demo Video Guidelines
+#### Get All Responses
+```http
+GET /api/responses
+Authorization: Bearer {token}
+```
 
-Record a 2-3 minute Loom video showing:
+#### Get Responses by Restaurant
+```http
+GET /api/responses/restaurant/{restaurantId}
+Authorization: Bearer {token}
+```
 
-1. **Login** (0:00-0:10)
-   - Login with default credentials
+## 📱 WhatsApp Integration
 
-2. **Create Restaurant** (0:10-0:30)
-   - Create McDonald's India - Jayanagar
-   - Show it appears in the list
+### Setup WhatsApp Business API
 
-3. **Add Sections** (0:30-0:50)
-   - Add Billing Counter, Dining Area, Washroom Area
-   - Show the sections list
+1. **Create Meta Developer Account**
+   - Visit [Meta for Developers](https://developers.facebook.com)
+   - Create new Business App
 
-4. **Add Questions** (0:50-1:20)
-   - Add sample questions for Billing Counter
-   - Show questions organized by section
+2. **Add WhatsApp Product**
+   - In app dashboard, add WhatsApp product
+   - Complete verification process
 
-5. **Send Inspection** (1:20-1:50)
-   - Enter phone number
-   - Click "Generate & Send WhatsApp Form"
-   - Show success message
+3. **Get Credentials**
+   - **Access Token**: From WhatsApp > Getting Started
+   - **Phone Number ID**: From test phone number section
+   - **Business Account ID**: From App Settings
 
-6. **Dashboard** (1:50-2:30)
-   - Show empty state initially
-   - Explain webhook receives responses
-   - Show example of what responses look like
+4. **Configure Webhook**
+   - Set webhook URL: `https://your-domain.com/api/whatsapp/webhook`
+   - Set verify token (same as in .env)
+   - Subscribe to `messages` events
 
-7. **Quick Code Walkthrough** (2:30-3:00)
-   - Show backend structure
-   - Show frontend components
-   - Mention WhatsApp API integration
+5. **Update Environment Variables**
+   - Add all credentials to backend `.env` file
 
-## 🧪 Testing Without WhatsApp API
+### WhatsApp Flow Structure
 
-If you don't have WhatsApp API credentials:
+The system generates dynamic WhatsApp Flows with:
+- Multiple screens (one per section)
+- Dynamic form fields based on question types
+- Radio buttons for Yes/No questions
+- Number inputs for numeric questions
+- Text inputs for open-ended questions
+- Navigation between sections
+- Submit functionality
 
-1. The app will still work for all CRUD operations
-2. Sending messages will fail gracefully with error messages
-3. You can test the webhook endpoint manually using tools like Postman
-4. Use this curl command to simulate a webhook response:
+### Webhook Handling
+
+The webhook endpoint receives:
+- Employee responses to inspection forms
+- Message metadata (sender, timestamp)
+- Flow completion data
+
+Responses are automatically:
+- Parsed and validated
+- Stored in MongoDB
+- Associated with correct restaurant and section
+- Made available on dashboard
+
+## 📁 Project Structure
+
+```
+heyopey-restaurant-inspection/
+├── backend/
+│   ├── config/
+│   │   └── db.js                 # MongoDB connection
+│   ├── middleware/
+│   │   └── auth.js               # JWT authentication
+│   ├── models/
+│   │   ├── Restaurant.js         # Restaurant schema
+│   │   ├── Section.js            # Section schema
+│   │   ├── Question.js           # Question schema
+│   │   └── Response.js           # Response schema
+│   ├── routes/
+│   │   ├── auth.js               # Authentication routes
+│   │   ├── restaurants.js        # Restaurant CRUD
+│   │   ├── sections.js           # Section CRUD
+│   │   ├── questions.js          # Question CRUD
+│   │   ├── responses.js          # Response retrieval
+│   │   └── whatsapp.js           # WhatsApp integration
+│   ├── services/
+│   │   └── whatsappService.js    # WhatsApp API logic
+│   ├── .env.example              # Environment template
+│   ├── package.json
+│   └── server.js                 # Express server
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Login.jsx         # Login component
+│   │   │   ├── RestaurantForm.jsx
+│   │   │   ├── SectionForm.jsx
+│   │   │   ├── QuestionForm.jsx
+│   │   │   ├── SendInspection.jsx
+│   │   │   └── Dashboard.jsx
+│   │   ├── App.jsx               # Main app component
+│   │   ├── main.jsx              # React entry point
+│   │   └── index.css             # Global styles
+│   ├── .env.example
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+├── .gitignore
+└── README.md
+```
+
+## 🔐 Environment Variables
+
+### Backend (.env)
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `PORT` | Server port | `5000` |
+| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/heyopey` |
+| `JWT_SECRET` | Secret key for JWT | `your_secret_key` |
+| `WHATSAPP_API_TOKEN` | Meta access token | `EAAxxxx...` |
+| `WHATSAPP_PHONE_NUMBER_ID` | WhatsApp phone number ID | `123456789` |
+| `WHATSAPP_BUSINESS_ACCOUNT_ID` | Business account ID | `987654321` |
+| `WEBHOOK_VERIFY_TOKEN` | Webhook verification token | `my_verify_token` |
+
+### Frontend (.env)
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `VITE_API_URL` | Backend API URL | `http://localhost:5000` |
+
+## 📸 Screenshots
+
+### Admin Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Create Restaurant
+![Create Restaurant](screenshots/restaurant.png)
+
+### Add Questions
+![Questions](screenshots/questions.png)
+
+### WhatsApp Flow
+![WhatsApp](screenshots/whatsapp.png)
+
+## 🧪 Testing
+
+### Test Without WhatsApp API
+
+The application fully functions for all CRUD operations without WhatsApp credentials:
+- ✅ User authentication
+- ✅ Restaurant management
+- ✅ Section creation
+- ✅ Question builder
+- ✅ Dashboard viewing
+
+WhatsApp integration will gracefully fail with informative error messages.
+
+### Test With WhatsApp API
+
+1. Set up valid credentials in `.env`
+2. Add your phone number as test recipient in Meta dashboard
+3. Send inspection form
+4. Complete form on WhatsApp
+5. Verify response appears on dashboard
+
+### Manual Webhook Testing
+
+Simulate webhook response with curl:
 
 ```bash
 curl -X POST http://localhost:5000/api/whatsapp/webhook \
@@ -307,8 +467,7 @@ curl -X POST http://localhost:5000/api/whatsapp/webhook \
             "interactive": {
               "type": "nfm_reply",
               "nfm_reply": {
-                "response_json": "{\"q_0_0\":\"yes\",\"q_0_1\":\"yes\",\"q_0_2\":\"3\"}",
-                "body": {"section": "YOUR_SECTION_ID"}
+                "response_json": "{\"q_0_0\":\"yes\",\"q_0_1\":\"yes\",\"q_0_2\":\"3\"}"
               }
             },
             "timestamp": "1234567890"
@@ -322,58 +481,81 @@ curl -X POST http://localhost:5000/api/whatsapp/webhook \
   }'
 ```
 
-## 📝 Notes
-
-- This is a **prototype** focused on functionality over UI polish
-- Authentication is simplified for demo purposes
-- In production, use proper password hashing, JWT refresh tokens, and role-based access
-- WhatsApp Flows have specific formatting requirements - see Meta's documentation
-- Webhook URL must be publicly accessible (use ngrok for local testing)
-
 ## 🐛 Troubleshooting
 
 ### MongoDB Connection Failed
-- Ensure MongoDB is running
-- Check MONGODB_URI in .env
+- Ensure MongoDB is running: `mongod` or `net start MongoDB`
+- Check `MONGODB_URI` in `.env`
+- Try using `127.0.0.1` instead of `localhost`
 
 ### WhatsApp API Errors
 - Verify all credentials are correct
-- Check that phone number is verified
-- Ensure webhook is properly configured
+- Check phone number is in international format (+country code)
+- Ensure webhook URL is publicly accessible (use ngrok for local testing)
+- Verify webhook token matches
 
 ### CORS Errors
-- Backend CORS is configured for all origins
-- Check VITE_API_URL in frontend .env
+- Check `VITE_API_URL` in frontend `.env`
+- Ensure backend is running
+- Verify ports are correct
 
-### Webhook Not Receiving Data
-- Use ngrok: `ngrok http 5000`
-- Update webhook URL in Meta dashboard
-- Check webhook logs in terminal
+### Port Already in Use
+```bash
+# Find process using port
+netstat -ano | findstr :5000
 
-## 📚 Additional Resources
+# Kill process (Windows)
+taskkill /PID <PID> /F
+```
 
-- [WhatsApp Business Platform Documentation](https://developers.facebook.com/docs/whatsapp)
-- [WhatsApp Flows Guide](https://business.whatsapp.com/products/whatsapp-flows)
-- [Meta API Postman Collection](https://www.postman.com/meta/whatsapp-business-platform)
+## 🔒 Security Considerations
 
-## 🎯 Evaluation Criteria Met
+- Never commit `.env` files to version control
+- Use strong JWT secrets in production
+- Implement rate limiting for API endpoints
+- Validate all user inputs on backend
+- Use HTTPS in production
+- Regularly rotate API tokens
+- Implement proper error handling without exposing sensitive data
 
-✅ Complete end-to-end flow working  
-✅ Admin can create restaurant  
-✅ Admin can add sections  
-✅ Admin can add questions per section  
-✅ WhatsApp Flow generation implemented  
-✅ API integration with Meta's WhatsApp API  
-✅ Webhook to receive responses  
-✅ Dashboard to view responses  
-✅ Clean code structure  
-✅ Clear documentation  
-✅ Sample data included  
+## 📈 Future Enhancements
 
-## 👨‍💻 Author
+- [ ] Multi-language support
+- [ ] Photo upload for inspections
+- [ ] Offline mode with sync
+- [ ] Analytics and reporting
+- [ ] Email notifications
+- [ ] Role-based access control
+- [ ] Inspection scheduling
+- [ ] Custom branding per restaurant
+- [ ] Export reports to PDF/Excel
+- [ ] Mobile app (React Native)
 
-Hariom Pandey
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
 ## 📄 License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Your Name**
+- GitHub: [@thehariompandey](https://github.com/thehariompandey)
+- LinkedIn: [Hariom Pandey](https://www.linkedin.com/in/hariom-pandey-871694296/)
+- 
+## 🙏 Acknowledgments
+
+- [WhatsApp Business Platform Documentation](https://developers.facebook.com/docs/whatsapp)
+- [Meta Graph API](https://developers.facebook.com/docs/graph-api)
+- [React Documentation](https://reactjs.org/)
+- [Express.js](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/)
+
