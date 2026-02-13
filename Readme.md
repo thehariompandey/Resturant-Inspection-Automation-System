@@ -40,7 +40,7 @@ A full-stack MERN application that enables restaurant administrators to create i
 [📹 Watch Demo Video](https://www.loom.com/share/1627e2dad682410b82d7c499a78c3277)
 
 **live link**
-[live link](https://my-resturant-backend.onrender.com)
+[live link](https://resturant-inspection-automation-sys.vercel.app/)
 
 **Test Credentials:**
 - Email: `admin@heyopey.com`
